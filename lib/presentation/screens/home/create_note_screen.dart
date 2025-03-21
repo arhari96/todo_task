@@ -16,18 +16,20 @@ class CreateNoteScreen extends StatefulWidget {
 class _CreateNoteScreenState extends State<CreateNoteScreen> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
-
+  final formKey = GlobalKey<FormState>();
   void saveNote() {
-    final note = NoteModel(
-      id: '',
-      title: titleController.text,
-      content: contentController.text,
-      timestamp: DateTime.now(),
-      userId: widget.userId,
-    );
+    if (formKey.currentState!.validate()) {
+      final note = NoteModel(
+        id: '',
+        title: titleController.text,
+        content: contentController.text,
+        timestamp: DateTime.now(),
+        userId: widget.userId,
+      );
 
-    context.read<NotesBloc>().add(AddNote(note: note));
-    Navigator.pop(context);
+      context.read<NotesBloc>().add(AddNote(note: note));
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -36,19 +38,32 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
       appBar: AppBar(title: Text("Create Note")),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: titleController,
-              decoration: InputDecoration(labelText: "Title"),
-            ),
-            TextField(
-              controller: contentController,
-              decoration: InputDecoration(labelText: "Content"),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(onPressed: saveNote, child: Text("Save")),
-          ],
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: titleController,
+                decoration: InputDecoration(labelText: "Title"),
+                validator: (v) {
+                  if (v!.isEmpty) {
+                    return "Please enter title";
+                  }
+                },
+              ),
+              TextFormField(
+                controller: contentController,
+                decoration: InputDecoration(labelText: "Content"),
+                validator: (v) {
+                  if (v!.isEmpty) {
+                    return "Please enter content";
+                  }
+                },
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(onPressed: saveNote, child: Text("Save")),
+            ],
+          ),
         ),
       ),
     );

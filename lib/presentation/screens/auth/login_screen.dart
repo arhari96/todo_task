@@ -65,12 +65,15 @@ class LoginScreen extends StatelessWidget {
                     ? CircularProgressIndicator()
                     : ElevatedButton(
                       onPressed: () {
-                        context.read<AuthBloc>().add(
-                          Login(
-                            email: emailController.text,
-                            password: passwordController.text,
-                          ),
-                        );
+                        if (emailController.text.isNotEmpty ||
+                            passwordController.text.isNotEmpty) {
+                          context.read<AuthBloc>().add(
+                            Login(
+                              email: emailController.text,
+                              password: passwordController.text,
+                            ),
+                          );
+                        }
                       },
                       child: Text("Login"),
                     ).animate().shake();

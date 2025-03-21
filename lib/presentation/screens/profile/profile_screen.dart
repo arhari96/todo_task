@@ -27,25 +27,27 @@ class ProfileScreen extends StatelessWidget {
             } else if (state is ProfileLoaded) {
               return Padding(
                 padding: EdgeInsets.all(8.w),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(Icons.account_circle, size: 25.w),
-                    SizedBox(height: 3.h),
-                    Text(
-                      "Email: ${state.email}",
-                      style: TextStyle(fontSize: 14.sp),
-                    ),
-                    SizedBox(height: 4.h),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.read<ProfileBloc>().add(LogoutUser());
-                        Navigator.pushReplacementNamed(context, "/login");
-                      },
-                      child: Text("Logout"),
-                    ),
-                  ],
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(Icons.account_circle, size: 25.w),
+                      SizedBox(height: 3.h),
+                      Text(
+                        "Email: ${state.email}",
+                        style: TextStyle(fontSize: 14.sp),
+                      ),
+                      SizedBox(height: 4.h),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.read<ProfileBloc>().add(LogoutUser());
+                          Navigator.pushReplacementNamed(context, "/login");
+                        },
+                        child: Text("Logout"),
+                      ),
+                    ],
+                  ),
                 ),
               );
             } else if (state is ProfileError) {

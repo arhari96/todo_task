@@ -22,12 +22,12 @@ class RegisterScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
+            TextFormField(
               controller: emailController,
               decoration: InputDecoration(labelText: "Email"),
             ),
             SizedBox(height: 2.h),
-            TextField(
+            TextFormField(
               controller: passwordController,
               decoration: InputDecoration(labelText: "Password"),
               obscureText: true,
@@ -62,12 +62,15 @@ class RegisterScreen extends StatelessWidget {
                     ? CircularProgressIndicator()
                     : ElevatedButton(
                       onPressed: () {
-                        context.read<AuthBloc>().add(
-                          SignUp(
-                            email: emailController.text,
-                            password: passwordController.text,
-                          ),
-                        );
+                        if (emailController.text.isNotEmpty ||
+                            passwordController.text.isNotEmpty) {
+                          context.read<AuthBloc>().add(
+                            SignUp(
+                              email: emailController.text,
+                              password: passwordController.text,
+                            ),
+                          );
+                        }
                       },
                       child: Text("Sign Up"),
                     );
